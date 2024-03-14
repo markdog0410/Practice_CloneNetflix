@@ -12,7 +12,9 @@ class TitleTableViewCell: UITableViewCell {
     static let identifier = "TitleTableViewCell"
     
     private let playTitleButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
+        let image = UIImage(systemName: "play.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40))
+        button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -20,12 +22,14 @@ class TitleTableViewCell: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         return label
     }()
     
     private let titlesPosterUIImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -52,10 +56,12 @@ class TitleTableViewCell: UITableViewCell {
             titlesPosterUIImageView.widthAnchor.constraint(equalToConstant: 100),
             
             titleLabel.leadingAnchor.constraint(equalTo: titlesPosterUIImageView.trailingAnchor, constant: 20),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
-            
-            
+            playTitleButton.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            playTitleButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            playTitleButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            playTitleButton.widthAnchor.constraint(equalToConstant: 45)
         ])
     }
     

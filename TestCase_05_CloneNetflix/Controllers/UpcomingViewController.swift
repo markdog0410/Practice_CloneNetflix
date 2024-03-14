@@ -34,6 +34,13 @@ class UpcomingViewController: UIViewController {
         upcomingTable.frame = view.bounds
     }
     
+/*
+    self？它常用於解決潛在的強參考循環問題，通常在閉包中使用。
+    使用weak self可在閉包中捕獲對當前實例的弱引用，避免強參考循環。
+    然而，在某些情況下，閉包可能仍然需要引用self本身，例如當你想要在閉包中使用self的其他方法或屬性時。
+    在這種情況下，使用weak self將無法直接訪問self的方法和屬性，因為它是一個可選型的弱引用。
+    為了解決這個問題，你可以在閉包中使用self?，它會將self解析為一個可選型的強引用，這樣你就可以安全地訪問self的方法和屬性。
+*/
     func fetchUpcoming() {
         APICaller.shared.getUpcomingMovies { [weak self] result in
             switch result {
