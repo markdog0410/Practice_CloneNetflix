@@ -152,5 +152,37 @@ class APICaller {
         }
         task.resume()
     }
+    
+    func search(with query: String, completed: @escaping (Result<[Title], Error>) -> Void) {
+        /*        
+         目的是將變數 query 中的字串進行百分比編碼，以便在 URL 中使用，".urlHostAllowed "是一個 CharacterSet，代表允許 URL 主機部分的字符，這些字符不需要被百分比編碼。
+         
+         除了 .urlHostAllowed 之外，常用的 URL 字符集合還包括：
+         1, .urlFragmentAllowed: 允許 URL 片段部分的字符，如 #。
+         2, .urlQueryAllowed: 允許 URL 查詢部分的字符，如 ?。
+         3, .urlPasswordAllowed: 允許 URL 密碼部分的字符。
+         4, .urlPathAllowed: 允許 URL 路徑部分的字符，例如 /。
+         5, .urlUserAllowed: 允許 URL 使用者部分的字符。
+         */
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
+        
+        guard let url = URL(string: "\(Constant.BASE)/3/search/movie?query=\(query)&api_key=\(Constant.API_KEY)") else {return}
+        
+        var request = URLRequest(url: url)
+        request.setValue(Constant.API_TOKEN_BEAR, forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let result = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
+                completed(.success(result.results))
+            } catch {
+                completed(.failure(APIError.failedToGetData))
+            }
+        }
+        task.resume()
+    }
 }
 
