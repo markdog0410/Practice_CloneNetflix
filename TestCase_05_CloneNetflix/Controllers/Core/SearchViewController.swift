@@ -17,16 +17,25 @@ class SearchViewController: UIViewController {
         return table
     }()
     
+    private let searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: SearchResultViewController())
+        searchController.searchBar.placeholder = "Search for a Movie or a TV show."
+        searchController.searchBar.searchBarStyle = .minimal
+        return searchController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Search"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationItem.searchController = searchController
         
         discoverTable.delegate = self
         discoverTable.dataSource = self
         
         view.addSubview(discoverTable)
+        
         fetchDiscoverMovies()
         
     }
