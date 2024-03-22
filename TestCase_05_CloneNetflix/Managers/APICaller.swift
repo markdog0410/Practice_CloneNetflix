@@ -4,7 +4,6 @@
 //
 //  Created by Tsai Ming Chen on 2024/3/12.
 //
-//https://api.themoviedb.org/3/trending/movie/day?language=zh-tw
 
 import Foundation
 
